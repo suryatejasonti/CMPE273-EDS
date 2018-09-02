@@ -3,6 +3,9 @@ import concurrent.futures
 import requests
 import sys
 
+# api-endpoint
+#URL = "https://webhook.site/49279164-074f-4a1a-a875-1ee55b7c1560"
+
 async def async_call():
     number_hits = 3
     with concurrent.futures.ThreadPoolExecutor(max_workers=number_hits) as executor:

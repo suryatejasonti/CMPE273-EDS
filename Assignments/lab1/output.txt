@@ -1,0 +1,17 @@
+Suryas-MacBook-Pro:lab1 suryasonti$ python3 http_call.py https://webhook.site/49279164-074f-4a1a-a875-1ee55b7c1560
+Sun, 02 Sep 2018 23:33:58 GMT
+Sun, 02 Sep 2018 23:33:58 GMT
+Sun, 02 Sep 2018 23:34:00 GMT
+Suryas-MacBook-Pro:lab1 suryasonti$ python3 http_call.py https://webhook.site/49279164-074f-4a1a-a875-1ee55b7c1560
+Sun, 02 Sep 2018 23:34:05 GMT
+Sun, 02 Sep 2018 23:34:06 GMT
+Sun, 02 Sep 2018 23:34:07 GMT
+Suryas-MacBook-Pro:lab1 suryasonti$ python3 http_async_call.py https://webhook.site/49279164-074f-4a1a-a875-1ee55b7c1560
+Sun, 02 Sep 2018 23:35:03 GMT
+Sun, 02 Sep 2018 23:35:03 GMT
+Sun, 02 Sep 2018 23:35:03 GMT
+Suryas-MacBook-Pro:lab1 suryasonti$ python3 http_async_call.py https://webhook.site/49279164-074f-4a1a-a875-1ee55b7c1560
+Sun, 02 Sep 2018 23:35:06 GMT
+Sun, 02 Sep 2018 23:35:06 GMT
+Sun, 02 Sep 2018 23:35:06 GMT
+
