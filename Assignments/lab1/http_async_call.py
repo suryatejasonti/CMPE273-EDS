@@ -1,23 +1,25 @@
-# importing the requests library
-import requests
 import asyncio
+import concurrent.futures
+import requests
 import sys
 
-# api-endpoint
-#URL = "https://webhook.site/49279164-074f-4a1a-a875-1ee55b7c1560"
-async def async_call(URL):    
-    r = requests.get(url = URL)
-    if r.status_code == 200:
-        print(r.headers['Date'])
+async def async_call():
+    number_hits = 3
+    with concurrent.futures.ThreadPoolExecutor(max_workers=number_hits) as executor:
 
-async def main(URL):
-    await asyncio.gather(
-        async_call(URL),
-        async_call(URL),
-        async_call(URL),
-    )  
-
-if __name__ ==  '__main__':
-    if len(sys.argv) > 0:
         loop = asyncio.get_event_loop()
-        loop.run_until_complete(main(sys.argv[1]))
+        futures = [
+            loop.run_in_executor(
+                executor, 
+                requests.get, 
+                sys.argv[1]
+            )
+            for i in range(number_hits)
+        ]
+        for response in await asyncio.gather(*futures):
+                if response.status_code == 200:
+                    print(response.headers['Date'])
+
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(async_call())
