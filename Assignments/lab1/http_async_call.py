@@ -22,6 +22,9 @@ async def async_call():
         for response in await asyncio.gather(*futures):
                 if response.status_code == 200:
                     print(response.headers['Date'])
+                else:
+                    print("Warning: check out webhook link is its working !")
+                    break
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
