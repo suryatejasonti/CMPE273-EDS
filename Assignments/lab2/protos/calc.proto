@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+// The calculator service definition.
+service Calculator {
+  // Sends numbers and getting total
+  rpc AddDigits (AddRequest) returns (AddTotal) {}
+}
+
+// The request message containing the digits to calc
+message AddRequest {
+  int32 digit1 = 1;
+  int32 digit2 = 2;
+}
+
+// The response message containing the output from calc
+message AddTotal {
+  int32 total = 1;
+}
+
+//Suryas-MacBook-Pro:lab2 suryasonti$ python3 -m grpc_tools.protoc -Iprotos/ --python_out=. --grpc_python_out=. protos/calc.proto
+//python3 -m grpc_tools.protoc -Iprotos/ --python_out=. --grpc_python_out=. protos/calc.proto
