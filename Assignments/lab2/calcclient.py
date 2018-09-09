@@ -14,10 +14,10 @@ def run():
     with grpc.insecure_channel('localhost:50050') as channel:
         stub = calc_pb2_grpc.CalculatorStub(channel)
         response = stub.Add(calc_pb2.AddRequest(digit1 = getinput(), digit2 = getinput()))
-        print(response.total)
+        print("Total from digits given : %s" %response.total)
 
 def getinput():
-    digit = int(input("Enter digit to add :"))
+    digit = input("Enter digit to add :")
     return digit
 
 
