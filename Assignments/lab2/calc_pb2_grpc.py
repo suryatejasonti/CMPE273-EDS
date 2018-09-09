@@ -14,8 +14,8 @@ class CalculatorStub(object):
     Args:
       channel: A grpc.Channel.
     """
-    self.AddDigits = channel.unary_unary(
-        '/Calculator/AddDigits',
+    self.Add = channel.unary_unary(
+        '/Calculator/Add',
         request_serializer=calc__pb2.AddRequest.SerializeToString,
         response_deserializer=calc__pb2.AddTotal.FromString,
         )
@@ -25,7 +25,7 @@ class CalculatorServicer(object):
   """The calculator service definition.
   """
 
-  def AddDigits(self, request, context):
+  def Add(self, request, context):
     """Sends numbers and getting total
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -35,8 +35,8 @@ class CalculatorServicer(object):
 
 def add_CalculatorServicer_to_server(servicer, server):
   rpc_method_handlers = {
-      'AddDigits': grpc.unary_unary_rpc_method_handler(
-          servicer.AddDigits,
+      'Add': grpc.unary_unary_rpc_method_handler(
+          servicer.Add,
           request_deserializer=calc__pb2.AddRequest.FromString,
           response_serializer=calc__pb2.AddTotal.SerializeToString,
       ),

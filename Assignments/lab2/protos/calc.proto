@@ -1,9 +1,10 @@
 syntax = "proto3";
 
+
 // The calculator service definition.
 service Calculator {
   // Sends numbers and getting total
-  rpc AddDigits (AddRequest) returns (AddTotal) {}
+  rpc Add (AddRequest) returns (AddTotal) {}
 }
 
 // The request message containing the digits to calc

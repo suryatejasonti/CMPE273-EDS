@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='calc.proto',
   package='',
   syntax='proto3',
-  serialized_pb=_b('\n\ncalc.proto\",\n\nAddRequest\x12\x0e\n\x06\x64igit1\x18\x01 \x01(\x05\x12\x0e\n\x06\x64igit2\x18\x02 \x01(\x05\"\x19\n\x08\x41\x64\x64Total\x12\r\n\x05total\x18\x01 \x01(\x05\x32\x33\n\nCalculator\x12%\n\tAddDigits\x12\x0b.AddRequest\x1a\t.AddTotal\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\ncalc.proto\",\n\nAddRequest\x12\x0e\n\x06\x64igit1\x18\x01 \x01(\x05\x12\x0e\n\x06\x64igit2\x18\x02 \x01(\x05\"\x19\n\x08\x41\x64\x64Total\x12\r\n\x05total\x18\x01 \x01(\x05\x32-\n\nCalculator\x12\x1f\n\x03\x41\x64\x64\x12\x0b.AddRequest\x1a\t.AddTotal\"\x00\x62\x06proto3')
 )
 
 
@@ -120,11 +120,11 @@ _CALCULATOR = _descriptor.ServiceDescriptor(
   index=0,
   options=None,
   serialized_start=87,
-  serialized_end=138,
+  serialized_end=132,
   methods=[
   _descriptor.MethodDescriptor(
-    name='AddDigits',
-    full_name='Calculator.AddDigits',
+    name='Add',
+    full_name='Calculator.Add',
     index=0,
     containing_service=None,
     input_type=_ADDREQUEST,
