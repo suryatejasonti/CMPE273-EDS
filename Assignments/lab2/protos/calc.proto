@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-
+package grpc;
 // The calculator service definition.
 service Calculator {
   // Sends numbers and getting total
