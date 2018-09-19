@@ -44,3 +44,7 @@ Thumbs.db
 #VSCODE settings#
 #####################
 */.vscode/*
+
+#python cache#
+#####################
+*/__pycache__/*

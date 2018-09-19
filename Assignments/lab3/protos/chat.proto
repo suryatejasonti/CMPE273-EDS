@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package grpc;
+// The chat service definition.
+service ChatServer {
+  
+  // This bi-directional stream makes it possible to send and receive Notes between 2 persons
+  rpc ChatStream (Empty) returns (stream Note);
+  rpc SendNote (Note) returns (Empty);
+}
+
+message Empty {
+  
+}
+
+// The request message containing the client name and message
+message Note {
+  string name = 1;
+  string message = 2;
+}
+
+//Suryas-MacBook-Pro:lab3 suryasonti$ python3 -m grpc_tools.protoc -Iprotos/ --python_out=. --grpc_python_out=. protos/chat.proto
+//python3 -m grpc_tools.protoc -Iprotos/ --python_out=. --grpc_python_out=. protos/chat.proto
