@@ -1,0 +1,4 @@
+To run datagram-connected and multicast UDP and to verify client when server is not available
+In normal UDP, connected-dagaram throws error when server is unavaible.
+In multicast UDP as there is no difference between server and client, server joins multicast group and receives messages.
+multicast client does not throw error even if server is unavaible.
