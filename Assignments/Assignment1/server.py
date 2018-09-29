@@ -4,11 +4,14 @@ import grpc
 import time
 
 import chat_pb2 as chat
-import chat_pb2_grpc as rpc
+import chat_pb2_grpc as chat_rpc
+import user_pb2
+import user_pb2_grpc
+
 
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
-class ChatServer(rpc.ChatServerServicer):
+class ChatServicer(chat_rpc.ChatServerServicer):
 
     def __init__(self):
         # List with all the chat history
@@ -46,11 +49,37 @@ class ChatServer(rpc.ChatServerServicer):
         self.chats.append(request)
         return chat.Empty()
 
+class UserServicer(user_pb2_grpc.UserServicer):
+
+    def __init__(self):
+        # List with all the users history
+        self.users = []
+
+    def AddUser(self, request: user_pb2.UserName, context):
+        self.users.append(request)
+        lastindex = 0
+        # For every client a infinite loop starts (in gRPC's own managed thread)
+        # Check if there are any new messages
+        while len(self.users) > lastindex:
+            n = self.users[lastindex]
+            lastindex += 1
+            yield n
+
+    def RemoveUser(self, request: user_pb2.UserName, context):
+        lastindex = 0
+        # Check if there are any new messages
+        while len(self.users) > lastindex:
+            n = self.users[lastindex]
+            lastindex += 1
+            yield n
 
 def serve():
     port = 50050
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    rpc.add_ChatServerServicer_to_server(ChatServer(), server)
+    
+    chat_rpc.add_ChatServerServicer_to_server(ChatServicer(), server)
+    user_pb2_grpc.add_UserServicer_to_server(UserServicer(), server)
+
     print('Starting server. Listening...')
     server.add_insecure_port('[::]:' + str(port))
     server.start()
@@ -59,6 +88,8 @@ def serve():
             time.sleep(_ONE_DAY_IN_SECONDS)
     except KeyboardInterrupt:
         server.stop(0)
+    finally:
+        server.stop(0)
 
 if __name__ == '__main__':
-  serve()
+    serve()
