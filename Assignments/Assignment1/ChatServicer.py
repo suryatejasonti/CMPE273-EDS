@@ -18,16 +18,13 @@ class ChatServicer(chat_rpc.ChatServerServicer):
         :return:
         """
         lastindex = 0
-        try:
-            # For every client a infinite loop starts (in gRPC's own managed thread)
-            while(True):
-                # Check if there are any new messages
-                while len(self.chats) > lastindex:
-                    n = self.chats[lastindex]
-                    lastindex += 1
-                    yield n
-        except KeyboardInterrupt:
-            print('i am called')
+        # For every client a infinite loop starts (in gRPC's own managed thread)
+        while(True):
+            # Check if there are any new messages
+            while len(self.chats) > lastindex:
+                n = self.chats[lastindex]
+                lastindex += 1
+                yield n
 
     def SendMsg(self, request: chat.Message, context):
         """
