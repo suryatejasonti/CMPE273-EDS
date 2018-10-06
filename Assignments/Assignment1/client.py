@@ -31,13 +31,13 @@ class Client:
             # create new listening thread for when new message streams come in
             threading.Thread(target=self.__listen_for_messages, args=[chat_stub], daemon=True).start()
             # create new listening thread for when new user come in
-            threading.Thread(target=self.get_users, args=[user_stub], daemon=True).start()
-
+            threading.Thread(target=self.__get_users, args=[user_stub], daemon=True).start()
+            
             self.send_request(user_stub)
             self.send_message(chat_stub, user_stub)
     
-    def __get_users(self, user_stub):
-        self.userslist = []
+    def get_users(self, user_stub):
+        self.userslist.clear()
         for usr in user_stub.GetUsers(chat.Empty()):
             self.userslist.append(usr)
 
@@ -46,13 +46,12 @@ class Client:
         ur.name = USERNAME
         user_stub.AddUser(ur)
 
-    def get_users(self, user_stub):
-        while(True):
-            self.__get_users(user_stub)
-            print_string = '[Spartan] User list:'
-            for usr in self.userslist:
-                print_string += '{},'.format(usr.name)
-            print(print_string[:-1])
+    def __get_users(self, user_stub):
+        self.get_users(user_stub)
+        print_string = '[Spartan] User list:'
+        for usr in self.userslist:
+            print_string += '{},'.format(usr.name)
+        print(print_string[:-1])
 
 
     def send_request(self, user_stub):

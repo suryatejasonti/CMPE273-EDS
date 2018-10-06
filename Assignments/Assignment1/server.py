@@ -24,7 +24,7 @@ def serve():
         while(True):
             time.sleep(_ONE_DAY_IN_SECONDS)
     except(KeyboardInterrupt):
-        server.stop(1)
+        server.stop(0)
         print('[Spartan] Server Shutdown')
 
 if __name__ == '__main__':
