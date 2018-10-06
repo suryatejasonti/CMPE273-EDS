@@ -23,7 +23,7 @@ class UserServicer(chat_rpc.UserServicer):
 
     def GetUsers(self, request_iterator, context):
         # For every client a infinite loop starts (in gRPC's own managed thread)
-        while(self.newuseradded):
+        if self.newuseradded:
             for usr in self.users:
                 yield usr
                 self.newuseradded = False
