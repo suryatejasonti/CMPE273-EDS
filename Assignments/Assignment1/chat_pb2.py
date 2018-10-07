@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='chat.proto',
   package='spartanchat',
   syntax='proto3',
-  serialized_pb=_b('\n\nchat.proto\x12\x0bspartanchat\"\x07\n\x05\x45mpty\"%\n\x07Message\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04note\x18\x02 \x01(\t\"\x18\n\x08UserName\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x8c\x01\n\x05Group\x12!\n\x02me\x18\x01 \x01(\x0b\x32\x15.spartanchat.UserName\x12\x30\n\x07\x66riends\x18\x02 \x03(\x0b\x32\x1f.spartanchat.Group.FriendsEntry\x1a.\n\x0c\x46riendsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x08:\x02\x38\x01\x32}\n\nChatServer\x12:\n\nReceiveMsg\x12\x14.spartanchat.Message\x1a\x14.spartanchat.Message0\x01\x12\x33\n\x07SendMsg\x12\x14.spartanchat.Message\x1a\x12.spartanchat.Empty2\xe7\x01\n\x04User\x12\x34\n\x07\x41\x64\x64User\x12\x15.spartanchat.UserName\x1a\x12.spartanchat.Empty\x12\x37\n\nRemoveUser\x12\x15.spartanchat.UserName\x1a\x12.spartanchat.Empty\x12\x37\n\x08GetUsers\x12\x12.spartanchat.Empty\x1a\x15.spartanchat.UserName0\x01\x12\x37\n\rFriendRequest\x12\x12.spartanchat.Group\x1a\x12.spartanchat.Groupb\x06proto3')
+  serialized_pb=_b('\n\nchat.proto\x12\x0bspartanchat\"\x07\n\x05\x45mpty\"%\n\x07Message\x12\x0c\n\x04name\x18\x01 \x01(\x0c\x12\x0c\n\x04note\x18\x02 \x01(\x0c\"\x18\n\x08UserName\x12\x0c\n\x04name\x18\x01 \x01(\x0c\"\x8c\x01\n\x05Group\x12!\n\x02me\x18\x01 \x01(\x0b\x32\x15.spartanchat.UserName\x12\x30\n\x07\x66riends\x18\x02 \x03(\x0b\x32\x1f.spartanchat.Group.FriendsEntry\x1a.\n\x0c\x46riendsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x08:\x02\x38\x01\x32}\n\nChatServer\x12:\n\nReceiveMsg\x12\x14.spartanchat.Message\x1a\x14.spartanchat.Message0\x01\x12\x33\n\x07SendMsg\x12\x14.spartanchat.Message\x1a\x12.spartanchat.Empty2\xe7\x01\n\x04User\x12\x34\n\x07\x41\x64\x64User\x12\x15.spartanchat.UserName\x1a\x12.spartanchat.Empty\x12\x37\n\nRemoveUser\x12\x15.spartanchat.UserName\x1a\x12.spartanchat.Empty\x12\x37\n\x08GetUsers\x12\x12.spartanchat.Empty\x1a\x15.spartanchat.UserName0\x01\x12\x37\n\rFriendRequest\x12\x12.spartanchat.Group\x1a\x12.spartanchat.Groupb\x06proto3')
 )
 
 
@@ -58,15 +58,15 @@ _MESSAGE = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='name', full_name='spartanchat.Message.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='note', full_name='spartanchat.Message.note', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
+      number=2, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
@@ -96,8 +96,8 @@ _USERNAME = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='name', full_name='spartanchat.UserName.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),

@@ -24,12 +24,12 @@ message Empty {
 
 // The request message containing the client name and message
 message Message {
-  string name = 1;
-  string note = 2;
+  bytes name = 1;
+  bytes note = 2;
 }
 // The request message containing the user details
 message UserName {
-  string name=1;
+  bytes name=1;
 }
 // The request message containing users grouped in chat
 message Group {
