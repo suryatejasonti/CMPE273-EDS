@@ -14,7 +14,7 @@ class ChatServerStub(object):
     Args:
       channel: A grpc.Channel.
     """
-    self.ReceiveMsg = channel.unary_stream(
+    self.ReceiveMsg = channel.unary_unary(
         '/spartanchat.ChatServer/ReceiveMsg',
         request_serializer=chat__pb2.Message.SerializeToString,
         response_deserializer=chat__pb2.Message.FromString,
@@ -22,7 +22,7 @@ class ChatServerStub(object):
     self.SendMsg = channel.unary_unary(
         '/spartanchat.ChatServer/SendMsg',
         request_serializer=chat__pb2.Message.SerializeToString,
-        response_deserializer=chat__pb2.Empty.FromString,
+        response_deserializer=chat__pb2.Message.FromString,
         )
 
 
@@ -47,7 +47,7 @@ class ChatServerServicer(object):
 
 def add_ChatServerServicer_to_server(servicer, server):
   rpc_method_handlers = {
-      'ReceiveMsg': grpc.unary_stream_rpc_method_handler(
+      'ReceiveMsg': grpc.unary_unary_rpc_method_handler(
           servicer.ReceiveMsg,
           request_deserializer=chat__pb2.Message.FromString,
           response_serializer=chat__pb2.Message.SerializeToString,
@@ -55,7 +55,7 @@ def add_ChatServerServicer_to_server(servicer, server):
       'SendMsg': grpc.unary_unary_rpc_method_handler(
           servicer.SendMsg,
           request_deserializer=chat__pb2.Message.FromString,
-          response_serializer=chat__pb2.Empty.SerializeToString,
+          response_serializer=chat__pb2.Message.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
@@ -75,23 +75,23 @@ class UserStub(object):
     """
     self.AddUser = channel.unary_unary(
         '/spartanchat.User/AddUser',
-        request_serializer=chat__pb2.UserName.SerializeToString,
-        response_deserializer=chat__pb2.Empty.FromString,
+        request_serializer=chat__pb2.Message.SerializeToString,
+        response_deserializer=chat__pb2.Message.FromString,
         )
     self.RemoveUser = channel.unary_unary(
         '/spartanchat.User/RemoveUser',
-        request_serializer=chat__pb2.UserName.SerializeToString,
-        response_deserializer=chat__pb2.Empty.FromString,
+        request_serializer=chat__pb2.Message.SerializeToString,
+        response_deserializer=chat__pb2.Message.FromString,
         )
-    self.GetUsers = channel.unary_stream(
+    self.GetUsers = channel.unary_unary(
         '/spartanchat.User/GetUsers',
-        request_serializer=chat__pb2.Empty.SerializeToString,
-        response_deserializer=chat__pb2.UserName.FromString,
+        request_serializer=chat__pb2.Message.SerializeToString,
+        response_deserializer=chat__pb2.Message.FromString,
         )
     self.FriendRequest = channel.unary_unary(
         '/spartanchat.User/FriendRequest',
-        request_serializer=chat__pb2.Group.SerializeToString,
-        response_deserializer=chat__pb2.Group.FromString,
+        request_serializer=chat__pb2.Message.SerializeToString,
+        response_deserializer=chat__pb2.Message.FromString,
         )
 
 
@@ -132,23 +132,23 @@ def add_UserServicer_to_server(servicer, server):
   rpc_method_handlers = {
       'AddUser': grpc.unary_unary_rpc_method_handler(
           servicer.AddUser,
-          request_deserializer=chat__pb2.UserName.FromString,
-          response_serializer=chat__pb2.Empty.SerializeToString,
+          request_deserializer=chat__pb2.Message.FromString,
+          response_serializer=chat__pb2.Message.SerializeToString,
       ),
       'RemoveUser': grpc.unary_unary_rpc_method_handler(
           servicer.RemoveUser,
-          request_deserializer=chat__pb2.UserName.FromString,
-          response_serializer=chat__pb2.Empty.SerializeToString,
+          request_deserializer=chat__pb2.Message.FromString,
+          response_serializer=chat__pb2.Message.SerializeToString,
       ),
-      'GetUsers': grpc.unary_stream_rpc_method_handler(
+      'GetUsers': grpc.unary_unary_rpc_method_handler(
           servicer.GetUsers,
-          request_deserializer=chat__pb2.Empty.FromString,
-          response_serializer=chat__pb2.UserName.SerializeToString,
+          request_deserializer=chat__pb2.Message.FromString,
+          response_serializer=chat__pb2.Message.SerializeToString,
       ),
       'FriendRequest': grpc.unary_unary_rpc_method_handler(
           servicer.FriendRequest,
-          request_deserializer=chat__pb2.Group.FromString,
-          response_serializer=chat__pb2.Group.SerializeToString,
+          request_deserializer=chat__pb2.Message.FromString,
+          response_serializer=chat__pb2.Message.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

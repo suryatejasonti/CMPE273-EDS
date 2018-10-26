@@ -1,32 +1,20 @@
-from crypto import AES_Encrypt
-
-import chat_pb2 as chat
-import chat_pb2_grpc as chat_rpc
-
-class UserServicer(chat_rpc.UserServicer):
+class UserServicer():
 
     def __init__(self):
         # List with all the users history
         self.users = []
-        self.group = chat.Group
-        self.lastindex = 0
-        self.encry = AES_Encrypt()
 
-    def AddUser(self, request: chat.UserName, context):
+    def AddUser(self, username):
         # Add user to users list
-        self.users.append(request)
-        return chat.Empty()
+        self.users.append(username)
 
-    def RemoveUser(self, request: chat.UserName, context):
+    def RemoveUser(self, username):
         #Remove user from users list
-        self.users.remove(request)
-        return chat.Empty()
+        self.users.remove(username)
 
-    def GetUsers(self, request_iterator, context):
+    def GetUsers(self):
         # For every client a infinite loop starts (in gRPC's own managed thread)
-        for usr in self.users:
-            yield usr
-        
-    def FriendRequest(self, request: chat.Group, context):
-        #send friend request
-        self.group = request 
+        for user in self.users:
+            yield user
+
+    

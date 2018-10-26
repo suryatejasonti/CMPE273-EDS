@@ -31,20 +31,37 @@ class Client:
             user_stub = chat_rpc.UserStub(channel)
     
             # create new listening thread for when new message streams comes in
-            threading.Thread(target=self.__listen_for_messages, args=[chat_stub], daemon=True).start()
+            threading.Thread(target=self.receive_message, args=[chat_stub], daemon=True).start()
             self.add_user(chat_stub, user_stub)
-            self.options(user_stub, chat_stub)
+            self.chat_options(user_stub, chat_stub)
             self.send_message(chat_stub, user_stub)
     
-    def options(self, user_stub, chat_stub):
+    def run(self, user_stub, chat_stub):
+        for message in chat_stub.ReceiveMsg(chat.Empty()):
+            if(message.to == 'client'):
+                if(message.method == 'list_users'):
+                    
+
+    def message_encrypted(self, to, method, user):
+        message = chat.Message()
+        message.to = self.encrypt.encrypt(to)
+        message.method = self.encrypt.encrypt(method)
+        usr = chat.UserData() 
+        usr.name = self.encrypt.encrypt(user.name)
+        usr.note = self.encrypt.encrypt(user.note)
+        chat.Message.user = usr
+        message.user = usr
+        return message
+
+    def chat_options(self, user_stub, chat_stub):
         self.get_users(chat_stub, user_stub)
         self.single_user_options(user_stub)
         
 
-    def add_user(self, chat_stub, user_stub):
-        ur = chat.UserName()
-        ur.name = self.encrypt.encrypt(self.username)
-        user_stub.AddUser(ur)
+    def add_user(self, user_stub):
+        userdata = chat.UserData()
+        userdata.name = self.username
+        user_stub.SendMsg(self.message_encrypted('server', 'add_user', userdata))
 
     def get_users(self, chat_stub, user_stub):
         self.userslist = []
@@ -64,13 +81,13 @@ class Client:
         else:
             friend = input('[Spartan] Enter a user whom you want to chat with __SPARTAN__: ')
             for usr in self.userslist:
-                if friend.strip('__') is usr.name:
+                if friend.strip('__') is usr:
                     print('[Spartan] You are now ready to chat with {}.'.format(friend))                        
 
     def send_request(self, user_stub):
         print('sending request')
 
-    def __listen_for_messages(self, chat_stub):
+    def receive_message(self, chat_stub):
         '''
         This method will be ran in a separate thread as the main/ui thread, because the for-in call is blocking
         when waiting for new messages
@@ -96,6 +113,9 @@ class Client:
         ur.name = self.encrypt.encrypt(self.username)
         user_stub.RemoveUser(ur)
         print("\n[Spartan] {} exit".format(self.username))
+    
+
+        
 
 def main():
     if len(sys.argv) != 2:

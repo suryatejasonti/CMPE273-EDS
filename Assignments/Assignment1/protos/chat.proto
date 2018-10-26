@@ -5,36 +5,29 @@ package spartanchat;
 service ChatServer {
   
   // This bi-directional stream makes it possible to send and receive Notes between 2 persons
-  rpc ReceiveMsg(Message) returns (stream Message);
-  rpc SendMsg (Message) returns (Empty);
+  rpc ReceiveMsg(Message) returns (Message);
+  rpc SendMsg (Message) returns (Message);
 }
 
 service User {
-  
   // This bi-directional stream makes it possible to send and receive Notes between 2 persons
-  rpc AddUser(UserName) returns (Empty);
-  rpc RemoveUser(UserName) returns (Empty);
-  rpc GetUsers(Empty) returns (stream UserName);
-  rpc FriendRequest(Group) returns (Group);
+  rpc AddUser(Message) returns (Message);
+  rpc RemoveUser(Message) returns (Message);
+  rpc GetUsers(Message) returns (Message);
+  rpc FriendRequest(Message) returns (Message);
 }
 
-message Empty {
-  
-}
-
+message Empty {}
 // The request message containing the client name and message
 message Message {
-  bytes name = 1;
-  bytes note = 2;
+  bytes to=1;
+  bytes method = 2;
+  UserData user = 3;
 }
 // The request message containing the user details
-message UserName {
+message UserData {
   bytes name=1;
-}
-// The request message containing users grouped in chat
-message Group {
-  UserName me = 1;
-  map<string, bool> friends = 2;
+  bytes note=2;
 }
 //Suryas-MacBook-Pro:lab3 suryasonti$ python3 -m grpc_tools.protoc -Iprotos/ --python_out=. --grpc_python_out=. protos/chat.proto
 //python3 -m grpc_tools.protoc -Iprotos/ --python_out=_server/ --grpc_python_out=_server/ protos/chat.proto
