@@ -9,7 +9,6 @@ api = Api(app)
 
 urls = {}
 parser = reqparse.RequestParser()
-parser.add_argument('url')
 hashids = Hashids()
 
 class Url(Resource):
