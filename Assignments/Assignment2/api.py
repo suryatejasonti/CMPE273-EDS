@@ -17,7 +17,7 @@ class Causes(Resource):
     def get(self):
         result = {}
         result["num_entries"] = len(causes_of_death)
-        result["entries"] = causes_of_death
+        #result["entries"] = causes_of_death
         return str(result), 201
 
     def post(self):

@@ -1,45 +1,10 @@
 import http.client
 import json
-from bisect import bisect
-from hashlib import md5
 import sys
 import re
 import csv_parser
-
-
-class Ring():
-    
-    def __init__(self, server_list, num_replicas=3):
-        nodes = self.generate_nodes(server_list, num_replicas)
-        hnodes = [self.hash(node) for node in nodes]
-        hnodes.sort()
-
-        self.num_replicas = num_replicas
-        self.nodes = nodes
-        self.hnodes = hnodes
-        self.nodes_map = {self.hash(node): node.split("-")[1] for node in nodes}
-    
-    @staticmethod
-    def hash(val):
-        m = md5(val.encode())
-        return int(m.hexdigest(), 16)
-
-    @staticmethod
-    def generate_nodes(server_list, num_replicas):
-        nodes = []
-        for i in range(num_replicas):
-            for server in server_list:
-                nodes.append("{0}-{1}".format(i, server))
-        return nodes
-
-    def get_node(self, val):
-        pos = bisect(self.hnodes, self.hash(val))
-        if pos == len(self.hnodes):
-            return self.nodes_map[self.hnodes[0]]
-        else:
-            return self.nodes_map[self.hnodes[pos]]
-    
-
+import get_hash
+from hrw_hash import HRW_Hash
 
 class client():
     def __init__(self, host):
@@ -71,16 +36,16 @@ def getconnections():
     for server in servers:
         connections[server] = client(server)
 
-def hash(val):
-        m = md5(val.encode())
-        return int(m.hexdigest(), 16)
 
 def send_requests():
-    ring = Ring(servers)
+    ring = HRW_Hash(servers)
     data_dict = csv_parser.parsetodict(csv_file_name)
+    count = 0
     for key, value in data_dict.items():
-        connections[ring.get_node(key)].send_entry(dict([(str(hash(value)), value)]))
-
+        if connections[ring.get_node(key)].send_entry(dict([(str(get_hash.hash(key)), value)])) == 200:
+            count += 1
+    print('Uploaded all %s entries.' %count)
+    print('Verifying the data.')
     for connection in connections.values():
         connection.get_entries()
 
