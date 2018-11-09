@@ -1,7 +1,6 @@
 from flask import Flask
 import json
 from flask_restful import reqparse, abort, Api, Resource, request
-from hashlib import md5
 import sys
 
 
@@ -12,12 +11,12 @@ parser = reqparse.RequestParser()
 causes_of_death = []
 
 
-class Causes(Resource):
+class Service(Resource):
     
     def get(self):
         result = {}
         result["num_entries"] = len(causes_of_death)
-        #result["entries"] = causes_of_death
+        result["entries"] = causes_of_death
         return str(result), 201
 
     def post(self):
@@ -27,7 +26,7 @@ class Causes(Resource):
         causes_of_death.append(data)
         return 201
 
-api.add_resource(Causes, '/api/v1/entries')
+api.add_resource(Service, '/api/v1/entries')
 
 def main():
     port = 5000
