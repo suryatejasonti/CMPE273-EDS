@@ -17,7 +17,7 @@ r = requests.get(url, params={'addr': alice_address})
 address = Address(address=alice_address) # See signature for additional args
 address.get() # Get the latest information from Horizon
 
-print('Balances: {}'.format(address.balances))
+print('Alice Balances: {}'.format(address.balances))
 
 # Bob's address, for the destination
 kp = Keypair.random()
@@ -25,6 +25,10 @@ bob_address = kp.address().decode()
 url = 'https://friendbot.stellar.org'
 r = requests.get(url, params={'addr': bob_address})
 
+address = Address(address=bob_address) # See signature for additional args
+address.get() # Get the latest information from Horizon
+
+print('Bobs Balances: {}'.format(address.balances))
 
 builder = Builder(secret=seed)
 builder.append_payment_op(bob_address, '100', 'XLM')
@@ -37,9 +41,9 @@ response = builder.submit()
 address = Address(address=bob_address) # See signature for additional args
 address.get() # Get the latest information from Horizon
 
-print('Balances: {}'.format(address.balances))
+print('Bobs Balances: {}'.format(address.balances))
 
 address = Address(address=alice_address) # See signature for additional args
 address.get() # Get the latest information from Horizon
 
-print('Balances: {}'.format(address.balances))
+print('Alice Balances: {}'.format(address.balances))
