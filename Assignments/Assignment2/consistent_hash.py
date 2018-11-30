@@ -3,10 +3,6 @@ import sys
 from Helpers.get_hash import hashit
 from Helpers.csv_parser import csv_line_dict
 from Client.client import Client
-import pandas as pd
-import concurrent.futures
-import requests
-import time
 
 
 class Consistent_Hash():
@@ -41,9 +37,9 @@ def send_requests():
     for server in servers:
         connections[server] = Client(server)
     ring = Consistent_Hash()
-    data = csv_line_dict(csv_file_name)
+    data_dict = csv_line_dict(csv_file_name)
     count = 0
-    for key, value in data:
+    for key, value in data_dict:
         if connections[ring.get_node(key)].send_entry(dict([(str(hashit(key)), value)])) == 200:
             count += 1
 
