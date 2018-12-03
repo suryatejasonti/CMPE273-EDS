@@ -8,8 +8,8 @@ import json
 alice_kp = Keypair.random()
 seed = alice_kp.seed().decode()
 alice_address = alice_kp.address().decode()
-
-#to play in the Stellar test network, you can ask our Friendbot to create an account
+print('alice_address: {}'.format(alice_address))
+#to play in the Stellar test network, you can ask Friendbot to create an account
 url = 'https://friendbot.stellar.org'
 r = requests.get(url, params={'addr': alice_address})
 
@@ -22,6 +22,7 @@ print('Alice Balances: {}'.format(address.balances))
 # Bob's address, for the destination
 kp = Keypair.random()
 bob_address = kp.address().decode()
+print('bobs_address: {}'.format(bob_address))
 url = 'https://friendbot.stellar.org'
 r = requests.get(url, params={'addr': bob_address})
 
