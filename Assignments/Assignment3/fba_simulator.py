@@ -54,13 +54,7 @@ async def check_message_in_storage(node):
 
             await asyncio.sleep(0.01)
 
-    await asyncio.sleep(3)
-
     check_message_in_storage.is_running = False
-
-    MESSAGE = Message.new(uuid1().hex)
-    servers['n0'].transport.send(nodes['n0'].endpoint, MESSAGE.serialize(client0_node))
-    log.main.info('inject message %s -> n0: %s', client0_node.name, MESSAGE)
 
     return
 
@@ -147,7 +141,7 @@ if __name__ == '__main__':
     nodes_config = dict()
     for i in range(options.nodes):
         name = 'n%d' % i
-        endpoint = 'sock://memory:%d' % i
+        endpoint = 'http://localhost:%d' % i
         nodes_config[name] = NodeConfig(name, endpoint, options.trs)
 
     log.main.debug('node configs created: %s', nodes_config)
