@@ -7,7 +7,7 @@ from socket import socketpair
 import urllib.parse
 import uuid
 
-from util import log
+from .util import log
 
 
 CLOCK_SEQ = int(time.time() * 1000000)

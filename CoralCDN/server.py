@@ -2,7 +2,7 @@ from flask import Flask, render_template_string
 from flask_cdn import CDN
 
 app = Flask(__name__)
-app.config['CDN_DOMAIN'] = 'nyud.net.127.0.0.1'
+app.config['CDN_DOMAIN'] = 'nyud.net'
 app.config['CDN_TIMESTAMP'] = False
 CDN(app)
 

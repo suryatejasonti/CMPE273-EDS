@@ -1,4 +1,4 @@
-from util import Message
+from .util import Message
 import socket
 import sys
 
