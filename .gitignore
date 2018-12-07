@@ -38,13 +38,13 @@ Thumbs.db
 
 #ipython_checkpoints#
 ######################
-*/.ipynb_checkpoints/*
+.ipynb_checkpoints/*
 
 
 #VSCODE settings#
 #####################
-*/.vscode/*
+.vscode/*
 
 #python cache#
 #####################
-*/__pycache__/*
+__pycache__/*
