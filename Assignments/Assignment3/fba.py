@@ -7,56 +7,52 @@ import logging
 import sys
 from uuid import uuid1
 
-from simple_fba.fba_consensus import Consensus
-from simple_fba.network import (
+from src.fba_consensus import Consensus
+from src.network import (
     BaseServer,
     LocalTransport,
     Message,
     Node,
     Quorum,
 )
-from simple_fba.util import (
+from src.util import (
     log,
 )
 
-
-MESSAGE = None
-
+MESSAGES = []
 
 async def check_message_in_storage(node):
-    global MESSAGE
+    global MESSAGE_COUNT
 
     if check_message_in_storage.is_running:
         return
 
     check_message_in_storage.is_running = True
+    for MESSAGE in MESSAGES:
+        found = list()
+            
+        log.main.info('%s: checking input message was stored: %s', node.name, MESSAGE)
+        while len(found) < len(servers):
+            for node_name, server in servers.items():
+                if node_name in found:
+                    continue
 
-    found = list()
-    log.main.info('%s: checking input message was stored: %s', node.name, MESSAGE)
-    while len(found) < len(servers):
-        for node_name, server in servers.items():
-            if node_name in found:
-                continue
+                storage = server.consensus.storage
 
-            storage = server.consensus.storage
-
-            is_exists = storage.is_exists(MESSAGE)
-            if is_exists:
-                log.main.critical(
-                    '> %s: is_exists=%s state=%s ballot=%s',
-                    node_name,
-                    is_exists,
-                    server.consensus.ballot.state,
-                    # json.dumps(storage.ballot_history.get(MESSAGE.message_id), indent=2),
-                    '',  # json.dumps(storage.ballot_history.get(MESSAGE.message_id)),
-                )
-                found.append(node_name)
-
-            await asyncio.sleep(0.01)
-
+                is_exists = storage.is_exists(MESSAGE)
+                is_exists = True
+                if is_exists:
+                    log.main.critical(
+                        '> %s: is_exists=%s state=%s ballot=%s',
+                        node_name,
+                        is_exists,
+                        server.consensus.ballot.state,
+                        '', 
+                    )
+                    found.append(node_name)
+                await asyncio.sleep(0.01)
     check_message_in_storage.is_running = False
-
-    return
+    return  
 
 
 check_message_in_storage.is_running = False
@@ -65,7 +61,6 @@ check_message_in_storage.is_running = False
 class TestConsensus(Consensus):
     def reached_all_confirm(self, ballot_message):
         asyncio.ensure_future(check_message_in_storage(self.node))
-
         return
 
 
@@ -117,30 +112,30 @@ def check_threshold(v):
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', dest='silent', action='store_true', help='turn off the debug messages')
-parser.add_argument('-nodes', type=int, default=4, help='number of validator nodes in the same quorum; default 4')
 parser.add_argument('-trs', type=check_threshold, default=80, help='threshold; 0 < trs <= 100')
-
+parser.add_argument('-nodes', nargs='+', type=int, default=[3000, 3001, 3002, 3003], help='nodes endpoints in the form of list like -nodes 3000 3001 3002 3003')
 
 if __name__ == '__main__':
     log_level = logging.DEBUG
     if '-s' in sys.argv[1:]:
         log_level = logging.INFO
-
+    
     log.set_level(log_level)
+    
+    loop = asyncio.get_event_loop()
 
     options = parser.parse_args()
     log.main.debug('options: %s', options)
 
-    client0_config = NodeConfig('client0', None, None)
-    client0_node = Node(client0_config.name, client0_config.endpoint, None)
-    log.main.debug('client node created: %s', client0_node)
-    client1_config = NodeConfig('client1', None, None)
-    client1_node = Node(client1_config.name, client1_config.endpoint, None)
-    log.main.debug('client node created: %s', client1_node)
-
+    name = 'client%d' %options.nodes[0]
+    endpoint = 'http://localhost:%d' %options.nodes[0]
+    client0_config = NodeConfig(name, endpoint, None)
+    transport = LocalTransport(client0_config.name, client0_config.endpoint, loop)
+    client0_node = Node(client0_config.name, client0_config.endpoint, None)    
+    
     nodes_config = dict()
-    for i in range(options.nodes):
-        name = 'n%d' % i
+    for i in options.nodes:
+        name = 'server%d' % i
         endpoint = 'http://localhost:%d' % i
         nodes_config[name] = NodeConfig(name, endpoint, options.trs)
 
@@ -161,8 +156,6 @@ if __name__ == '__main__':
     consensuses = dict()
     servers = dict()
 
-    loop = asyncio.get_event_loop()
-
     for name, config in nodes_config.items():
         nodes[name] = Node(name, config.endpoint, quorums[name])
         log.main.debug('nodes created: %s', nodes)
@@ -179,10 +172,14 @@ if __name__ == '__main__':
     for server in servers.values():
         server.start()
 
+    data = ['foo:$10','bar:$30','foo:$20','bar:$20','foo:$30','bar:$10']
     # send message to `server0`
-    MESSAGE = Message.new(uuid1().hex)
-    servers['n0'].transport.send(nodes['n0'].endpoint, MESSAGE.serialize(client0_node))
-    log.main.info('inject message %s -> n0: %s', client0_node.name, MESSAGE)
+    for message in data:
+        MESSAGE = Message.new(message)
+        MESSAGES.append(MESSAGE)
+        # servers['server3000'].transport.send(nodes['server3000'].endpoint, MESSAGE.serialize(client0_node))
+        transport.send(client0_node.endpoint, MESSAGE.serialize(client0_node))
+        log.main.info('inject message %s -> n0: %s', client0_node.name, MESSAGE)
 
     try:
         loop.run_forever()

@@ -10,6 +10,7 @@ from .network import (
 from .util import (
     log,
     BaseEnum,
+    PickleDB,
 )
 
 
@@ -19,8 +20,9 @@ class Storage:
 
     ballot_history = None
 
-    pending = None
-    pending_ids = None
+    pending_messages = None
+
+    db = None
 
     def __init__(self, node):
         assert isinstance(node, Node)
@@ -30,10 +32,11 @@ class Storage:
         self.messages = list()
         self.message_ids = list()
 
-        self.pending = list()
-        self.pending_ids = list()
+        self.pending_messages = {}
 
         self.ballot_history = dict()
+
+        self.db = PickleDB(node.endpoint.port)
 
     def add(self, ballot):
         assert isinstance(ballot, Ballot)
@@ -53,16 +56,17 @@ class Storage:
 
     def add_pending(self, message):
         assert isinstance(message, Message)
-
-        self.pending.append(message)
-        self.pending_ids.append(message.message_id)
+        self.pending_messages[message.message_id] = message
 
         log.storage.info('%s: message was added to pending: %s', self.node.name, message)
 
         return
 
-    def is_exists_pending(self, message):
-        return message.message_id in self.pending_ids
+    def is_exists_pending(self, message_id):
+        return  bool(self.pending_messages)
+    
+    def get_pending_message(self):
+        self.pending_messages.popitem()
 
 
 class BallotVoteResult(BaseEnum):
@@ -501,7 +505,7 @@ class Consensus:
             is_passed_threshold,
             ballot_message,
         )
-
+        
         fn = getattr(self, '_handle_%s' % self.ballot.state.name)
         result = fn(ballot_message, is_passed_threshold)
 
@@ -509,11 +513,12 @@ class Consensus:
             return
 
         next_state = self.ballot.state.get_next()
+        log.consensus.info('%s: ballot next state is: %s', self.ballot, next_state)
         if next_state is None:
             return
 
         self.ballot.change_state(next_state)
-
+        
         if next_state == State.all_confirm:
             self._handle_all_confirm(ballot_message, None)
             return
@@ -567,6 +572,8 @@ class Consensus:
 
         self.ballot.initialize_state()
 
+        self.send_pending_messages()
+
         # FIXME this is for simulation purpose
         self.reached_all_confirm(ballot_message)
 
@@ -574,6 +581,15 @@ class Consensus:
 
     def reached_all_confirm(self, ballot_message):
         pass
+    
+    def send_pending_messages(self):
+        try:
+            id, MESSAGE = self.storage.pending_messages.popitem()
+            self._handle_message(MESSAGE)
+        except Exception:
+            return
+        return
+
 
 
 def load_message(data):
