@@ -108,9 +108,14 @@ class PickleDB():
     def is_exists(self, key):
         return self.db.exists(key)
     
-    def appendValue(self, key, value):
+    def appendValue(self, data):
+        key, value = data.split(':$')
         val = self.getValue(key)
         if val:
             value = int(val) + int(value)
+        self.setValue(key, value)
+    
+    def dump(self):
+        self.db.dump()
 
 

@@ -54,7 +54,6 @@ async def check_message_in_storage(node):
     check_message_in_storage.is_running = False
     return  
 
-
 check_message_in_storage.is_running = False
 
 
@@ -177,7 +176,6 @@ if __name__ == '__main__':
     for message in data:
         MESSAGE = Message.new(message)
         MESSAGES.append(MESSAGE)
-        # servers['server3000'].transport.send(nodes['server3000'].endpoint, MESSAGE.serialize(client0_node))
         transport.send(client0_node.endpoint, MESSAGE.serialize(client0_node))
         log.main.info('inject message %s -> n0: %s', client0_node.name, MESSAGE)
 

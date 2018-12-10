@@ -36,7 +36,7 @@ class Storage:
 
         self.ballot_history = dict()
 
-        self.db = PickleDB(node.endpoint.port)
+        
 
     def add(self, ballot):
         assert isinstance(ballot, Ballot)
@@ -44,6 +44,11 @@ class Storage:
         assert ballot.state == State.all_confirm
 
         self.messages.append(ballot.message)
+        
+        db = PickleDB(self.node.endpoint.port)
+        db.appendValue(ballot.message.data)
+        db.dump()
+
         self.message_ids.append(ballot.message.message_id)
         self.ballot_history[ballot.message.message_id] = ballot.to_dict()
 
