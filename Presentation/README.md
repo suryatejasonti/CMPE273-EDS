@@ -1,6 +1,7 @@
-We have primarily considered the paper “Experiences with CoralCDN: A Five-Year Operational View”. But while implementing Coral CDN using Flask CDN library in python, same we observed that “.nyud.net/” was not available for most of the time and was unreliable for implementation and presenting the same. 
+Surya Sonti (012535523)
+We have primarily considered the paper “Experiences with CoralCDN: A Five-Year Operational View”. But while implementing Coral CDN using Flask CDN library in python, we observed that “.nyud.net/” was not available for most and was unavailable with current DNS resolutions. Tried the coral using Flask-CDN and presenting the same.
 
-We then moved on to the paper “The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus”. We could run a full validator node using stellar core. We have used horizon to access the stellar core and stellar base library in python. We created accounts in testnet that uses three open sourced validators and successfully made transactions across accounts using public keys of accounts.
+In “The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus”. We could run a full validator node using stellar core. We have used horizon to access the stellar core and stellar base library in python. We created accounts in testnet that uses three open sourced validators and successfully made transactions across accounts using public keys of accounts.
 
 All the team members have basic understanding of the both the papers, since the second was preferred for presentation a presentation and report were created for it. 
 Both the Implementation code have been added to the repo.
@@ -21,9 +22,6 @@ Srinivasa Prasad Sunnapu (012526241):
 Understanding the internals of SCP implementations, including Nomination Protocol and Ballot Protocol, and how they leverage Federated Voting mechanism to achieve consensus and recover from Struck States. Confirmed the understanding from the white paper with output of simple-fba simulator. 
 
 
-
-
-
  Abraham William (012551877)
 Understanding both the papers “The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus” and “Experiences with CoralCDN: A Five-Year Operational View”
 Detailed explanation of FBAS (stellar consensus):Federated Voting in FBAS how they implement comsesus upholding liveliness and safeness of the quorum compared to centralised 
@@ -31,8 +29,9 @@ Detailed explanation of FBAS (stellar consensus):Federated Voting in FBAS how th
  Gone through the projects in git hub sample - -https://github.com/spikeekips/simple-fba 
 
 
-Surya Sonti (012535523)
 Vrushali (012535055)
 Understanding the goals that Federated Byzantine Agreements systems try to achieve. How can these goals be achieved irrespective of network. What are the factors affecting liveliness and safety. How can it be ensured that a system reaches consensus. Intersections and dispensable sets.  And their roles in ensuring that system achieves an agreement. 
 
+Surya(012535523)
+Worked in python samples for coral and SCP. Stellar core installations.
 
